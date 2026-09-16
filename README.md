@@ -1,6 +1,6 @@
 # Keenan Maze Semine — Portfolio
 
-A personal portfolio website showcasing my projects, skills, and education as a front-end developer and Computer Science student from Cebu City, Philippines.
+A personal portfolio website showcasing my projects, skills, and education as a front-end developer.
 
 ## About
 

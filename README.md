@@ -23,4 +23,4 @@ This portfolio is still a work in progress. I have more projects that will be ad
 ## Contact
 
 - Email: seminekeenan1@gmail.com
-- GitHub: [semi-naan](https://github.com/semi-naan)
+- Phone: 09672032153

@@ -1,4 +1,4 @@
-# Keenan Maze Semine — Portfolio
+# Portfolio
 
 A personal portfolio website showcasing my projects, skills, and education as a front-end developer.
 

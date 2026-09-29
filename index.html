@@ -92,9 +92,15 @@
     <section id="projects" class="section alt">
       <div class="container">
         <p class="eyebrow">02 — Projects</p>
-        <h2 class="section-title">Things I've <span class="accent">built &amp; contributed to</span></h2>
+        <div class="projects-heading">
+          <h2 class="section-title">Things I've <span class="accent">built &amp; contributed to</span></h2>
+          <div class="projects-controls">
+            <button class="project-arrow" id="projectsPrev" type="button" aria-label="Previous projects" aria-controls="projectsTrack">&#8592;</button>
+            <button class="project-arrow" id="projectsNext" type="button" aria-label="Next projects" aria-controls="projectsTrack">&#8594;</button>
+          </div>
+        </div>
 
-        <div class="projects-grid">
+        <div class="projects-grid" id="projectsTrack" role="region" aria-label="Projects" tabindex="0">
           <article class="project-card">
             <div class="project-top">
               <span class="project-folder">&#x1F4BB;</span>
@@ -153,6 +159,40 @@
             </div>
             <a class="text-link" href="https://queeniebustriaportfolio.vercel.app/" target="_blank" rel="noopener noreferrer">Visit Site &#8599;</a>
           </article>
+
+          <article class="project-card">
+            <div class="project-top">
+              <span class="project-folder">&#x1F5A8;</span>
+              <a class="project-link" href="https://github.com/semi-naan/drag-to-print" target="_blank" rel="noopener noreferrer" aria-label="Drag&amp;Print repository">&#8599;</a>
+            </div>
+            <h3>Drag&amp;Print</h3>
+            <p class="project-tag">Desktop App</p>
+            <p>
+              A drag-and-drop desktop utility for previewing and printing PDFs, images,
+              and documents, with in-app editing for text files and DOCX documents.
+            </p>
+            <div class="project-stack">
+              <span>Java</span><span>JavaFX</span><span>Maven</span>
+            </div>
+            <a class="text-link" href="https://github.com/semi-naan/drag-to-print" target="_blank" rel="noopener noreferrer">View on GitHub &#8599;</a>
+          </article>
+
+          <article class="project-card">
+            <div class="project-top">
+              <span class="project-folder">&#x1F697;</span>
+              <a class="project-link" href="https://github.com/VehiCareAI/VehiCareAI" target="_blank" rel="noopener noreferrer" aria-label="VehiCare AI repository">&#8599;</a>
+            </div>
+            <h3>VehiCareAI</h3>
+            <p class="project-tag">Android App · Academic Project</p>
+            <p>
+              A local-first vehicle health assessment app that guides users through
+              symptoms and ranks possible issues using Bayesian inference.
+            </p>
+            <div class="project-stack">
+              <span>Kotlin</span><span>Jetpack Compose</span><span>Room</span>
+            </div>
+            <a class="text-link" href="https://github.com/VehiCareAI/VehiCareAI" target="_blank" rel="noopener noreferrer">View on GitHub &#8599;</a>
+          </article>
         </div>
       </div>
     </section>
@@ -184,6 +224,13 @@
               <span class="chip">Android Studio</span><span class="chip">Git</span>
               <span class="chip">GitHub</span><span class="chip">Bruno</span>
               <span class="chip">DBeaver</span>
+            </div>
+          </div>
+          <div class="skill-block">
+            <h3>AI &amp; Automation</h3>
+            <div class="chips">
+              <span class="chip">n8n</span><span class="chip">Cline</span>
+              <span class="chip">OpenCode</span><span class="chip">Codex</span>
             </div>
           </div>
         </div>

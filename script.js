@@ -4,6 +4,27 @@
   const header = document.querySelector(".site-header");
   const themeToggle = document.getElementById("themeToggle");
   const revealEls = document.querySelectorAll(".project-card, .stat, .skill-block, .edu-item");
+  const projectsTrack = document.getElementById("projectsTrack");
+  const projectsPrev = document.getElementById("projectsPrev");
+  const projectsNext = document.getElementById("projectsNext");
+
+  const updateProjectControls = () => {
+    projectsPrev.disabled = projectsTrack.scrollLeft <= 1;
+    projectsNext.disabled = projectsTrack.scrollLeft + projectsTrack.clientWidth >= projectsTrack.scrollWidth - 1;
+  };
+
+  [projectsPrev, projectsNext].forEach((button, index) => {
+    button.addEventListener("click", () => {
+      const card = projectsTrack.querySelector(".project-card");
+      const gap = parseFloat(getComputedStyle(projectsTrack).columnGap);
+      const behavior = matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
+      projectsTrack.scrollBy({ left: (card.getBoundingClientRect().width + gap) * (index === 0 ? -1 : 1), behavior });
+    });
+  });
+
+  projectsTrack.addEventListener("scroll", updateProjectControls);
+  window.addEventListener("resize", updateProjectControls);
+  updateProjectControls();
 
   const toggleNav = () => {
     const isOpen = navLinks.classList.toggle("open");

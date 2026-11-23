@@ -23,7 +23,7 @@
   const menuToggle = document.getElementById("menuToggle");
   const sidebar = document.getElementById("sidebar");
   const sidebarBackdrop = document.getElementById("sidebarBackdrop");
-  const activeCoord = document.getElementById("activeCoord");
+  const activeCoords = Array.from(document.querySelectorAll("[data-active-coord]"));
   const themeToggle = document.getElementById("themeToggle");
   const cmdTrigger = document.getElementById("cmdTrigger");
   const cmdShortcutHint = document.getElementById("cmdShortcutHint");
@@ -160,9 +160,9 @@
       }
     });
 
-    if (activeCoord) {
-      activeCoord.textContent = PANEL_COORDS[targetId];
-    }
+    activeCoords.forEach((coordEl) => {
+      coordEl.textContent = PANEL_COORDS[targetId];
+    });
 
     if (updateHash && window.location.hash !== `#${targetId}`) {
       try {

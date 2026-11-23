@@ -38,20 +38,10 @@
           <span></span><span></span><span></span>
         </button>
         <div class="strip-coord">
-          <span class="coord-brand">semi-naan</span>
+          <span class="coord-brand">Keenan Semine</span>
           <span class="coord-sep" aria-hidden="true">//</span>
-          <span class="coord-active" id="activeCoord">01_about</span>
+          <span class="coord-active" data-active-coord>01_about</span>
         </div>
-      </div>
-      <div class="strip-controls">
-        <button type="button" class="cmd-trigger" id="cmdTrigger" aria-haspopup="dialog" aria-controls="cmdPalette" aria-label="Open quick actions command palette">
-          <span class="cmd-trigger-label">Quick Actions</span>
-          <kbd id="cmdShortcutHint">Ctrl K</kbd>
-        </button>
-        <button type="button" class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" aria-pressed="false">
-          <svg class="icon-moon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-          <svg class="icon-sun" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-        </button>
       </div>
     </div>
   </header>
@@ -61,8 +51,15 @@
     <aside class="sidebar" id="sidebar" aria-label="Profile and section navigation">
       <div class="sidebar-top">
         <div class="sidebar-identity">
-          <h1 class="sidebar-name">Keenan Maze <span class="accent">Semine</span></h1>
+          <h1 class="sidebar-name">
+            <span>Keenan Maze</span>
+            <span class="accent">Semine</span>
+          </h1>
           <p class="sidebar-role">Full-Stack Developer</p>
+          <div class="status-inline">
+            <span class="status-dot" aria-hidden="true"></span>
+            <span>Open to roles &amp; projects</span>
+          </div>
         </div>
 
         <nav class="rail-nav" role="tablist" aria-label="Portfolio sections" aria-orientation="vertical">
@@ -100,14 +97,16 @@
       </div>
 
       <div class="sidebar-footer">
-        <div class="status-badge">
-          <span class="status-dot" aria-hidden="true"></span>
-          <span>OPEN TO ROLES &amp; PROJECTS</span>
-        </div>
-        <div class="sidebar-links">
-          <a href="https://github.com/semi-naan" target="_blank" rel="noopener noreferrer">GitHub &#8599;</a>
-          <a href="mailto:seminekeenan1@gmail.com">seminekeenan1@gmail.com</a>
-        </div>
+        <button type="button" class="theme-switch" id="themeToggle" aria-label="Toggle dark mode" aria-pressed="false">
+          <span class="theme-opt theme-opt-light" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+            <span>Light</span>
+          </span>
+          <span class="theme-opt theme-opt-dark" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            <span>Dark</span>
+          </span>
+        </button>
       </div>
     </aside>
 
@@ -163,25 +162,25 @@
 
       <!-- 02 // PROJECTS -->
       <section class="stage-panel" id="projects" role="tabpanel" tabindex="-1" aria-labelledby="tab-projects" data-panel="projects">
-        <div class="projects-head">
-          <div class="panel-header panel-header-bare">
-            <span class="panel-code">02 // PROJECTS</span>
-            <span class="panel-spec">SELECTED_WORK</span>
-          </div>
-          <h2 class="panel-title">Things I've <span class="accent">built &amp; contributed to</span></h2>
-        </div>
-
-        <div class="project-tabs" role="tablist" aria-label="Filter projects by platform">
-          <button type="button" class="project-tab is-active" role="tab" aria-selected="true" data-filter="all">all (5)</button>
-          <button type="button" class="project-tab" role="tab" aria-selected="false" tabindex="-1" data-filter="mobile">mobile (2)</button>
-          <button type="button" class="project-tab" role="tab" aria-selected="false" tabindex="-1" data-filter="web">web (2)</button>
-          <button type="button" class="project-tab" role="tab" aria-selected="false" tabindex="-1" data-filter="desktop">desktop (1)</button>
-        </div>
-
-        <div class="bp-frame bp-frame-tabbed">
+        <div class="bp-frame">
+          <span class="bp-cross tl" aria-hidden="true">+</span>
           <span class="bp-cross tr" aria-hidden="true">+</span>
           <span class="bp-cross bl" aria-hidden="true">+</span>
           <span class="bp-cross br" aria-hidden="true">+</span>
+
+          <div class="panel-header">
+            <span class="panel-code">02 // PROJECTS</span>
+            <span class="panel-spec">SELECTED_WORK</span>
+          </div>
+
+          <h2 class="panel-title">Things I've <span class="accent">built &amp; contributed to</span></h2>
+
+          <div class="project-tabs" role="tablist" aria-label="Filter projects by platform">
+            <button type="button" class="project-tab is-active" role="tab" aria-selected="true" data-filter="all">all (5)</button>
+            <button type="button" class="project-tab" role="tab" aria-selected="false" tabindex="-1" data-filter="mobile">mobile (2)</button>
+            <button type="button" class="project-tab" role="tab" aria-selected="false" tabindex="-1" data-filter="web">web (2)</button>
+            <button type="button" class="project-tab" role="tab" aria-selected="false" tabindex="-1" data-filter="desktop">desktop (1)</button>
+          </div>
 
           <div class="projects-grid">
             <article class="project-card" data-category="mobile">

@@ -10,12 +10,12 @@
   --cross: #8474d8;
   --text: #1c1833;
   --muted: #5d567f;
-  --accent: #6f5cc9;
-  --accent-bright: #8474d8;
+  --accent: #634fc0;
+  --accent-bright: #735fd0;
   --accent-soft: #eeeafd;
-  --accent-tint: rgba(111, 92, 201, 0.12);
+  --accent-tint: rgba(99, 79, 192, 0.12);
   --on-accent: #ffffff;
-  --status-green: #16a34a;
+  --status-green: #15803d;
   --shadow-soft: 0 12px 32px rgba(72, 58, 145, 0.08);
   --shadow-dialog: 0 24px 64px rgba(34, 24, 84, 0.22);
   --backdrop: rgba(24, 18, 52, 0.45);
@@ -179,6 +179,9 @@ input {
 .coord-active {
   color: var(--accent);
   font-weight: 500;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .strip-controls {
@@ -500,6 +503,15 @@ input {
   display: flex;
   flex-direction: column;
   gap: 24px;
+  scroll-margin-top: calc(var(--strip-h) + 12px);
+}
+
+.stage-panel {
+  scroll-margin-top: calc(var(--strip-h) + 12px);
+}
+
+.stage-panel:focus {
+  outline: none;
 }
 
 html.js-ready .stage-panel {
@@ -671,6 +683,10 @@ html.js-ready .stage-panel.is-active {
 
 .project-tab:hover {
   color: var(--text);
+}
+
+.project-tab:focus-visible {
+  outline-offset: -3px;
 }
 
 .project-tab.is-active {
@@ -1062,23 +1078,39 @@ a.contact-value:hover {
 
 /* ---------- Seamless Tablet & Phone Adaptation ---------- */
 @media (max-width: 768px) {
+  :root {
+    --strip-h: 48px;
+  }
+
+  .top-strip-inner {
+    padding: 0 max(14px, env(safe-area-inset-right)) 0 max(14px, env(safe-area-inset-left));
+  }
+
+  .cmd-trigger,
+  .theme-toggle {
+    min-height: 36px;
+  }
+
+  .theme-toggle {
+    width: 36px;
+    height: 36px;
+  }
+
   .workspace {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     min-height: auto;
   }
 
-  .sidebar {
-    position: static;
-    height: auto;
-    overflow: visible;
-    border-right: none;
-    border-bottom: 1px solid var(--border);
-    padding: 18px max(16px, env(safe-area-inset-left)) 0 max(16px, env(safe-area-inset-right));
-    gap: 16px;
+  .sidebar,
+  .sidebar-top {
+    display: contents;
   }
 
-  .sidebar-top {
-    gap: 16px;
+  .sidebar-identity {
+    order: 1;
+    min-width: 0;
+    background: var(--surface);
+    padding: 18px max(16px, env(safe-area-inset-right)) 14px max(16px, env(safe-area-inset-left));
   }
 
   .sidebar-pitch {
@@ -1086,19 +1118,24 @@ a.contact-value:hover {
   }
 
   .sidebar-footer {
-    padding: 12px 0 14px;
     order: 2;
+    min-width: 0;
+    background: var(--surface);
+    border-top: 1px dashed var(--border);
+    padding: 12px max(16px, env(safe-area-inset-right)) 14px max(16px, env(safe-area-inset-left));
   }
 
   .rail-nav {
     order: 3;
+    width: 100%;
+    min-width: 0;
     flex-direction: row;
     overflow-x: auto;
     scrollbar-width: none;
     gap: 6px;
-    margin: 0 calc(max(16px, env(safe-area-inset-left)) * -1);
-    padding: 10px max(16px, env(safe-area-inset-left));
+    padding: 10px max(16px, env(safe-area-inset-right)) 10px max(16px, env(safe-area-inset-left));
     border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
     background: var(--surface-solid);
     position: sticky;
     top: var(--strip-h);
@@ -1122,12 +1159,35 @@ a.contact-value:hover {
     scroll-snap-align: start;
   }
 
+  .rail-btn:focus-visible {
+    outline-offset: -3px;
+  }
+
   .rail-line {
     display: none;
   }
 
   .stage {
+    order: 4;
+    width: 100%;
+    min-width: 0;
     padding: 18px max(14px, env(safe-area-inset-right)) max(28px, env(safe-area-inset-bottom)) max(14px, env(safe-area-inset-left));
+    scroll-margin-top: calc(var(--strip-h) + 68px);
+  }
+
+  .stage-panel {
+    scroll-margin-top: calc(var(--strip-h) + 68px);
+  }
+
+  .btn,
+  .project-tab {
+    min-height: 44px;
+  }
+
+  .project-arrow {
+    min-width: 44px;
+    min-height: 44px;
+    margin: -10px -10px -10px 0;
   }
 
   .edu-item {

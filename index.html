@@ -13,13 +13,14 @@
   <title>Keenan Maze Semine — Front-end Developer</title>
   <script>
     document.documentElement.classList.add("js-ready");
+    let saved = null;
     try {
-      const saved = localStorage.getItem("theme");
-      const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
-      document.documentElement.dataset.theme = saved === "dark" || (!saved && prefersDark) ? "dark" : "";
+      saved = localStorage.getItem("theme");
     } catch (_) {
-      document.documentElement.dataset.theme = "";
+      saved = null;
     }
+    const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+    document.documentElement.dataset.theme = saved === "dark" || (!saved && prefersDark) ? "dark" : "";
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -117,7 +118,7 @@
 
     <main class="stage" id="stage" tabindex="-1">
       <!-- 01 // ABOUT -->
-      <section class="stage-panel is-active" id="about" role="tabpanel" aria-labelledby="tab-about" data-panel="about">
+      <section class="stage-panel is-active" id="about" role="tabpanel" tabindex="-1" aria-labelledby="tab-about" data-panel="about">
         <div class="bp-frame">
           <span class="bp-cross tl" aria-hidden="true">+</span>
           <span class="bp-cross tr" aria-hidden="true">+</span>
@@ -166,7 +167,7 @@
       </section>
 
       <!-- 02 // PROJECTS -->
-      <section class="stage-panel" id="projects" role="tabpanel" aria-labelledby="tab-projects" data-panel="projects">
+      <section class="stage-panel" id="projects" role="tabpanel" tabindex="-1" aria-labelledby="tab-projects" data-panel="projects">
         <div class="projects-head">
           <div class="panel-header panel-header-bare">
             <span class="panel-code">02 // PROJECTS</span>
@@ -275,7 +276,7 @@
       </section>
 
       <!-- 03 // SKILLS -->
-      <section class="stage-panel" id="skills" role="tabpanel" aria-labelledby="tab-skills" data-panel="skills">
+      <section class="stage-panel" id="skills" role="tabpanel" tabindex="-1" aria-labelledby="tab-skills" data-panel="skills">
         <div class="bp-frame">
           <span class="bp-cross tl" aria-hidden="true">+</span>
           <span class="bp-cross tr" aria-hidden="true">+</span>
@@ -343,7 +344,7 @@
       </section>
 
       <!-- 04 // EDUCATION -->
-      <section class="stage-panel" id="education" role="tabpanel" aria-labelledby="tab-education" data-panel="education">
+      <section class="stage-panel" id="education" role="tabpanel" tabindex="-1" aria-labelledby="tab-education" data-panel="education">
         <div class="bp-frame">
           <span class="bp-cross tl" aria-hidden="true">+</span>
           <span class="bp-cross tr" aria-hidden="true">+</span>
@@ -377,7 +378,7 @@
       </section>
 
       <!-- 05 // CONTACT -->
-      <section class="stage-panel" id="contact" role="tabpanel" aria-labelledby="tab-contact" data-panel="contact">
+      <section class="stage-panel" id="contact" role="tabpanel" tabindex="-1" aria-labelledby="tab-contact" data-panel="contact">
         <div class="bp-frame">
           <span class="bp-cross tl" aria-hidden="true">+</span>
           <span class="bp-cross tr" aria-hidden="true">+</span>
@@ -427,21 +428,21 @@
     <div class="cmd-box">
       <div class="cmd-head">
         <span id="cmdTitle" class="sr-only">Quick actions command palette</span>
-        <input type="search" id="cmdSearch" class="cmd-input" placeholder="Type a command or section..." autocomplete="off" spellcheck="false" aria-label="Search commands" />
+        <input type="text" id="cmdSearch" class="cmd-input" role="combobox" aria-expanded="true" aria-controls="cmdList" aria-autocomplete="list" aria-activedescendant="cmd-opt-0" placeholder="Type a command or section..." autocomplete="off" spellcheck="false" aria-label="Search commands" />
         <button type="button" class="cmd-close" id="cmdClose" aria-label="Close command palette">ESC</button>
       </div>
       <ul class="cmd-list" id="cmdList" role="listbox" aria-label="Available commands">
-        <li><button type="button" class="cmd-item is-selected" data-cmd-action="panel:about" data-cmd-keywords="about bio profile intro"><span>01 // About</span><kbd>Section</kbd></button></li>
-        <li><button type="button" class="cmd-item" data-cmd-action="panel:projects" data-cmd-keywords="projects work portfolio apps repos"><span>02 // Projects</span><kbd>Section</kbd></button></li>
-        <li><button type="button" class="cmd-item" data-cmd-action="panel:skills" data-cmd-keywords="skills toolbox languages frameworks tools"><span>03 // Skills</span><kbd>Section</kbd></button></li>
-        <li><button type="button" class="cmd-item" data-cmd-action="panel:education" data-cmd-keywords="education school degree university cebu"><span>04 // Education</span><kbd>Section</kbd></button></li>
-        <li><button type="button" class="cmd-item" data-cmd-action="panel:contact" data-cmd-keywords="contact hire email phone reach"><span>05 // Contact</span><kbd>Section</kbd></button></li>
-        <li><button type="button" class="cmd-item" data-cmd-action="filter:mobile" data-cmd-keywords="mobile android kotlin compose"><span>Filter Projects: Mobile (2)</span><kbd>Filter</kbd></button></li>
-        <li><button type="button" class="cmd-item" data-cmd-action="filter:web" data-cmd-keywords="web html css javascript"><span>Filter Projects: Web (2)</span><kbd>Filter</kbd></button></li>
-        <li><button type="button" class="cmd-item" data-cmd-action="filter:desktop" data-cmd-keywords="desktop java javafx"><span>Filter Projects: Desktop (1)</span><kbd>Filter</kbd></button></li>
-        <li><button type="button" class="cmd-item" data-cmd-action="copy-email" data-cmd-keywords="copy email address mail clipboard"><span>Copy Email (seminekeenan1@gmail.com)</span><kbd>Action</kbd></button></li>
-        <li><button type="button" class="cmd-item" data-cmd-action="toggle-theme" data-cmd-keywords="theme dark light mode appearance"><span>Toggle Light / Dark Theme</span><kbd>Theme</kbd></button></li>
-        <li><button type="button" class="cmd-item" data-cmd-action="open-github" data-cmd-keywords="github profile code repo semi-naan"><span>Open GitHub Profile &#8599;</span><kbd>Link</kbd></button></li>
+        <li role="none"><button type="button" id="cmd-opt-0" role="option" aria-selected="true" class="cmd-item is-selected" data-cmd-action="panel:about" data-cmd-keywords="about bio profile intro"><span>01 // About</span><kbd>Section</kbd></button></li>
+        <li role="none"><button type="button" id="cmd-opt-1" role="option" aria-selected="false" class="cmd-item" data-cmd-action="panel:projects" data-cmd-keywords="projects work portfolio apps repos"><span>02 // Projects</span><kbd>Section</kbd></button></li>
+        <li role="none"><button type="button" id="cmd-opt-2" role="option" aria-selected="false" class="cmd-item" data-cmd-action="panel:skills" data-cmd-keywords="skills toolbox languages frameworks tools"><span>03 // Skills</span><kbd>Section</kbd></button></li>
+        <li role="none"><button type="button" id="cmd-opt-3" role="option" aria-selected="false" class="cmd-item" data-cmd-action="panel:education" data-cmd-keywords="education school degree university cebu"><span>04 // Education</span><kbd>Section</kbd></button></li>
+        <li role="none"><button type="button" id="cmd-opt-4" role="option" aria-selected="false" class="cmd-item" data-cmd-action="panel:contact" data-cmd-keywords="contact hire email phone reach"><span>05 // Contact</span><kbd>Section</kbd></button></li>
+        <li role="none"><button type="button" id="cmd-opt-5" role="option" aria-selected="false" class="cmd-item" data-cmd-action="filter:mobile" data-cmd-keywords="mobile android kotlin compose"><span>Filter Projects: Mobile (2)</span><kbd>Filter</kbd></button></li>
+        <li role="none"><button type="button" id="cmd-opt-6" role="option" aria-selected="false" class="cmd-item" data-cmd-action="filter:web" data-cmd-keywords="web html css javascript"><span>Filter Projects: Web (2)</span><kbd>Filter</kbd></button></li>
+        <li role="none"><button type="button" id="cmd-opt-7" role="option" aria-selected="false" class="cmd-item" data-cmd-action="filter:desktop" data-cmd-keywords="desktop java javafx"><span>Filter Projects: Desktop (1)</span><kbd>Filter</kbd></button></li>
+        <li role="none"><button type="button" id="cmd-opt-8" role="option" aria-selected="false" class="cmd-item" data-cmd-action="copy-email" data-cmd-keywords="copy email address mail clipboard"><span>Copy Email (seminekeenan1@gmail.com)</span><kbd>Action</kbd></button></li>
+        <li role="none"><button type="button" id="cmd-opt-9" role="option" aria-selected="false" class="cmd-item" data-cmd-action="toggle-theme" data-cmd-keywords="theme dark light mode appearance"><span>Toggle Light / Dark Theme</span><kbd>Theme</kbd></button></li>
+        <li role="none"><button type="button" id="cmd-opt-10" role="option" aria-selected="false" class="cmd-item" data-cmd-action="open-github" data-cmd-keywords="github profile code repo semi-naan"><span>Open GitHub Profile &#8599;</span><kbd>Link</kbd></button></li>
       </ul>
       <p class="cmd-empty" id="cmdEmpty" hidden>No matching commands.</p>
     </div>

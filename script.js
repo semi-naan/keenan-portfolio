@@ -8,9 +8,18 @@
     education: "04_education",
     contact: "05_contact",
   };
+  const PANEL_TITLES = {
+    about: "About",
+    projects: "Projects",
+    skills: "Skills",
+    education: "Education",
+    contact: "Contact",
+  };
   const VALID_PANELS = Object.keys(PANEL_COORDS);
 
   const root = document.documentElement;
+  const stage = document.getElementById("stage");
+  const skipLink = document.querySelector(".skip-link");
   const activeCoord = document.getElementById("activeCoord");
   const themeToggle = document.getElementById("themeToggle");
   const cmdTrigger = document.getElementById("cmdTrigger");
@@ -29,6 +38,8 @@
   const copyButtons = Array.from(document.querySelectorAll("[data-copy-email]"));
   const cmdItems = Array.from(document.querySelectorAll(".cmd-item[data-cmd-action]"));
 
+  let currentPanelId = null;
+
   const announce = (message) => {
     if (!liveAnnouncer) return;
     liveAnnouncer.textContent = "";
@@ -36,6 +47,14 @@
       liveAnnouncer.textContent = message;
     });
   };
+
+  /* ---------- Skip Link ---------- */
+  if (skipLink && stage) {
+    skipLink.addEventListener("click", (e) => {
+      e.preventDefault();
+      stage.focus({ preventScroll: false });
+    });
+  }
 
   /* ---------- Theme Toggle ---------- */
   const syncThemeButton = () => {
@@ -63,9 +82,35 @@
   }
 
   /* ---------- Section Panel Switcher ---------- */
+  const scrollStageIntoView = () => {
+    if (window.innerWidth > 768) {
+      if (window.scrollY > 0) {
+        window.scrollTo({ top: 0, behavior: "auto" });
+      }
+      return;
+    }
+    if (!stage) return;
+    const rect = stage.getBoundingClientRect();
+    const stickyOffset = 112;
+    if (rect.top < stickyOffset) {
+      window.scrollTo({ top: Math.max(0, window.scrollY + rect.top - stickyOffset), behavior: "auto" });
+    }
+  };
+
   const activatePanel = (panelId, options = {}) => {
-    const { updateHash = true, focusTab = false } = options;
+    const {
+      updateHash = true,
+      focusTab = false,
+      scrollToTop = false,
+      moveFocusToPanel = false,
+      announceSwitch = false,
+    } = options;
     const targetId = VALID_PANELS.includes(panelId) ? panelId : "about";
+    const activePanel = panels.find((p) => p.dataset.panel === targetId) || null;
+    const focusWasInsideHidingPanel = Boolean(
+      document.activeElement &&
+      panels.some((p) => p.dataset.panel !== targetId && p.contains(document.activeElement))
+    );
 
     panels.forEach((panel) => {
       const isMatch = panel.dataset.panel === targetId;
@@ -97,11 +142,25 @@
         window.location.hash = targetId;
       }
     }
+
+    if (scrollToTop) {
+      scrollStageIntoView();
+    }
+
+    if ((moveFocusToPanel || focusWasInsideHidingPanel) && !focusTab && activePanel) {
+      activePanel.focus({ preventScroll: true });
+    }
+
+    if (announceSwitch && currentPanelId !== targetId) {
+      announce(`Showing ${PANEL_TITLES[targetId]} section`);
+    }
+
+    currentPanelId = targetId;
   };
 
   railButtons.forEach((btn, idx) => {
     btn.addEventListener("click", () => {
-      activatePanel(btn.dataset.panelTrigger, { updateHash: true });
+      activatePanel(btn.dataset.panelTrigger, { updateHash: true, scrollToTop: true, announceSwitch: true });
     });
 
     btn.addEventListener("keydown", (e) => {
@@ -117,23 +176,36 @@
       }
       if (nextIdx !== null) {
         e.preventDefault();
-        activatePanel(railButtons[nextIdx].dataset.panelTrigger, { updateHash: true, focusTab: true });
+        activatePanel(railButtons[nextIdx].dataset.panelTrigger, {
+          updateHash: true,
+          focusTab: true,
+          scrollToTop: true,
+        });
       }
     });
   });
 
   jumpButtons.forEach((btn) => {
     btn.addEventListener("click", () => {
-      activatePanel(btn.dataset.panelJump, { updateHash: true });
+      activatePanel(btn.dataset.panelJump, {
+        updateHash: true,
+        scrollToTop: true,
+        moveFocusToPanel: true,
+        announceSwitch: true,
+      });
     });
   });
 
   const syncFromHash = () => {
     const raw = window.location.hash.replace(/^#/, "").trim().toLowerCase();
-    activatePanel(VALID_PANELS.includes(raw) ? raw : "about", { updateHash: false });
+    if (raw === "stage") return;
+    const nextId = VALID_PANELS.includes(raw) ? raw : "about";
+    if (currentPanelId === nextId) return;
+    activatePanel(nextId, { updateHash: false });
   };
 
   window.addEventListener("hashchange", syncFromHash);
+  window.addEventListener("popstate", syncFromHash);
   syncFromHash();
 
   /* ---------- Project Category Filter Tabs ---------- */
@@ -193,16 +265,23 @@
         // Fall through to execCommand fallback
       }
     }
+    const prevFocus = document.activeElement;
     try {
       const textarea = document.createElement("textarea");
       textarea.value = text;
       textarea.setAttribute("readonly", "");
       textarea.style.position = "fixed";
+      textarea.style.top = "0";
+      textarea.style.left = "0";
       textarea.style.opacity = "0";
       document.body.appendChild(textarea);
-      textarea.select();
+      textarea.focus();
+      textarea.setSelectionRange(0, text.length);
       const copied = document.execCommand("copy");
       document.body.removeChild(textarea);
+      if (prevFocus && typeof prevFocus.focus === "function") {
+        prevFocus.focus({ preventScroll: true });
+      }
       return copied;
     } catch (_) {
       return false;
@@ -211,15 +290,16 @@
 
   const triggerCopyEmail = async (sourceBtn) => {
     const ok = await copyTextToClipboard(EMAIL);
-    const feedback = ok ? "Copied!" : EMAIL;
-    announce(ok ? `Email ${EMAIL} copied to clipboard` : `Email address is ${EMAIL}`);
+    const feedback = ok ? "Copied!" : "Copy failed";
+    announce(ok ? `Email ${EMAIL} copied to clipboard` : `Could not copy automatically. Email address is ${EMAIL}`);
 
     if (sourceBtn) {
       if (!sourceBtn.dataset.originalLabel) {
         sourceBtn.dataset.originalLabel = sourceBtn.textContent;
       }
       sourceBtn.textContent = feedback;
-      sourceBtn.classList.add("is-copied");
+      sourceBtn.classList.remove("is-copied");
+      if (ok) sourceBtn.classList.add("is-copied");
       clearTimeout(Number(sourceBtn.dataset.copyTimer || 0));
       const timerId = window.setTimeout(() => {
         sourceBtn.textContent = sourceBtn.dataset.originalLabel;
@@ -241,19 +321,29 @@
   }
 
   let selectedCmdIndex = 0;
+  let lastPaletteClosedAt = 0;
 
   const getVisibleCmdItems = () => cmdItems.filter((item) => !item.parentElement.hidden);
 
   const highlightCmdIndex = (index) => {
     const visible = getVisibleCmdItems();
-    cmdItems.forEach((item) => item.classList.remove("is-selected"));
+    cmdItems.forEach((item) => {
+      item.classList.remove("is-selected");
+      item.setAttribute("aria-selected", "false");
+    });
     if (visible.length === 0) {
       selectedCmdIndex = -1;
+      if (cmdSearch) cmdSearch.removeAttribute("aria-activedescendant");
       return;
     }
     selectedCmdIndex = ((index % visible.length) + visible.length) % visible.length;
-    visible[selectedCmdIndex].classList.add("is-selected");
-    visible[selectedCmdIndex].scrollIntoView({ block: "nearest" });
+    const activeItem = visible[selectedCmdIndex];
+    activeItem.classList.add("is-selected");
+    activeItem.setAttribute("aria-selected", "true");
+    if (cmdSearch && activeItem.id) {
+      cmdSearch.setAttribute("aria-activedescendant", activeItem.id);
+    }
+    activeItem.scrollIntoView({ block: "nearest" });
   };
 
   const filterCommands = (query) => {
@@ -271,6 +361,7 @@
 
   const closePalette = () => {
     if (cmdPalette && cmdPalette.open) {
+      lastPaletteClosedAt = Date.now();
       cmdPalette.close();
     }
   };
@@ -279,9 +370,18 @@
     closePalette();
     if (!action) return;
     if (action.startsWith("panel:")) {
-      activatePanel(action.slice(6), { updateHash: true });
+      activatePanel(action.slice(6), {
+        updateHash: true,
+        scrollToTop: true,
+        moveFocusToPanel: true,
+        announceSwitch: true,
+      });
     } else if (action.startsWith("filter:")) {
-      activatePanel("projects", { updateHash: true });
+      activatePanel("projects", {
+        updateHash: true,
+        scrollToTop: true,
+        moveFocusToPanel: true,
+      });
       filterProjects(action.slice(7));
     } else if (action === "copy-email") {
       triggerCopyEmail(copyButtons[0] || null);
@@ -294,7 +394,7 @@
 
   const openPalette = () => {
     if (!cmdPalette || typeof cmdPalette.showModal !== "function") return;
-    if (cmdPalette.open) return;
+    if (cmdPalette.open || Date.now() - lastPaletteClosedAt < 150) return;
     if (cmdSearch) cmdSearch.value = "";
     filterCommands("");
     cmdPalette.showModal();
@@ -322,7 +422,9 @@
         const visible = getVisibleCmdItems();
         if (selectedCmdIndex >= 0 && visible[selectedCmdIndex]) {
           e.preventDefault();
-          executeCommand(visible[selectedCmdIndex].dataset.cmdAction);
+          e.stopPropagation();
+          const chosenAction = visible[selectedCmdIndex].dataset.cmdAction;
+          executeCommand(chosenAction);
         }
       }
     });

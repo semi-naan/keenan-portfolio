@@ -20,6 +20,9 @@
   const root = document.documentElement;
   const stage = document.getElementById("stage");
   const skipLink = document.querySelector(".skip-link");
+  const menuToggle = document.getElementById("menuToggle");
+  const sidebar = document.getElementById("sidebar");
+  const sidebarBackdrop = document.getElementById("sidebarBackdrop");
   const activeCoord = document.getElementById("activeCoord");
   const themeToggle = document.getElementById("themeToggle");
   const cmdTrigger = document.getElementById("cmdTrigger");
@@ -56,6 +59,41 @@
     });
   }
 
+  /* ---------- Mobile Burger Menu Drawer ---------- */
+  const isDrawerOpen = () => Boolean(sidebar && sidebar.classList.contains("is-open"));
+
+  const setDrawerOpen = (open, options = {}) => {
+    const { restoreFocus = false } = options;
+    if (!sidebar || !menuToggle) return;
+    sidebar.classList.toggle("is-open", open);
+    menuToggle.classList.toggle("is-open", open);
+    menuToggle.setAttribute("aria-expanded", String(open));
+    menuToggle.setAttribute("aria-label", open ? "Close navigation menu" : "Open navigation menu");
+    if (sidebarBackdrop) sidebarBackdrop.hidden = !open;
+    root.classList.toggle("drawer-open", open);
+    if (!open && restoreFocus) {
+      menuToggle.focus();
+    }
+  };
+
+  if (menuToggle && sidebar) {
+    menuToggle.addEventListener("click", () => {
+      setDrawerOpen(!isDrawerOpen());
+    });
+  }
+
+  if (sidebarBackdrop) {
+    sidebarBackdrop.addEventListener("click", () => {
+      setDrawerOpen(false, { restoreFocus: true });
+    });
+  }
+
+  window.addEventListener("resize", () => {
+    if (window.innerWidth > 768 && isDrawerOpen()) {
+      setDrawerOpen(false);
+    }
+  });
+
   /* ---------- Theme Toggle ---------- */
   const syncThemeButton = () => {
     if (!themeToggle) return;
@@ -83,17 +121,8 @@
 
   /* ---------- Section Panel Switcher ---------- */
   const scrollStageIntoView = () => {
-    if (window.innerWidth > 768) {
-      if (window.scrollY > 0) {
-        window.scrollTo({ top: 0, behavior: "auto" });
-      }
-      return;
-    }
-    if (!stage) return;
-    const rect = stage.getBoundingClientRect();
-    const stickyOffset = 112;
-    if (rect.top < stickyOffset) {
-      window.scrollTo({ top: Math.max(0, window.scrollY + rect.top - stickyOffset), behavior: "auto" });
+    if (window.scrollY > 0) {
+      window.scrollTo({ top: 0, behavior: "auto" });
     }
   };
 
@@ -160,7 +189,14 @@
 
   railButtons.forEach((btn, idx) => {
     btn.addEventListener("click", () => {
-      activatePanel(btn.dataset.panelTrigger, { updateHash: true, scrollToTop: true, announceSwitch: true });
+      const wasOpen = isDrawerOpen();
+      if (wasOpen) setDrawerOpen(false);
+      activatePanel(btn.dataset.panelTrigger, {
+        updateHash: true,
+        scrollToTop: true,
+        moveFocusToPanel: wasOpen,
+        announceSwitch: true,
+      });
     });
 
     btn.addEventListener("keydown", (e) => {
@@ -395,6 +431,7 @@
   const openPalette = () => {
     if (!cmdPalette || typeof cmdPalette.showModal !== "function") return;
     if (cmdPalette.open || Date.now() - lastPaletteClosedAt < 150) return;
+    if (isDrawerOpen()) setDrawerOpen(false);
     if (cmdSearch) cmdSearch.value = "";
     filterCommands("");
     cmdPalette.showModal();
@@ -443,6 +480,11 @@
   }
 
   document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && isDrawerOpen()) {
+      e.preventDefault();
+      setDrawerOpen(false, { restoreFocus: true });
+      return;
+    }
     if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
       e.preventDefault();
       if (cmdPalette && cmdPalette.open) {

@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="description" content="Portfolio of Keenan Maze Semine — Front-end Developer building clean web, Android (Kotlin & Jetpack Compose), and desktop applications from Cebu City, Philippines." />
+  <meta name="description" content="Portfolio of Keenan Maze Semine" />
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="Keenan Maze Semine — Front-end Developer" />
+  <meta property="og:title" content="Keenan Maze Semine" />
   <meta property="og:description" content="Front-end Developer crafting clean, user-friendly interfaces across web, Android (Kotlin & Jetpack Compose), and desktop utilities." />
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Keenan Maze Semine — Front-end Developer" />
+  <meta name="twitter:title" content="Keenan Maze Semine" />
   <meta name="twitter:description" content="Front-end Developer based in Cebu City, Philippines. Explore projects, skills, and contact details." />
-  <title>Keenan Maze Semine — Front-end Developer</title>
+  <title>Keenan Maze Semine</title>
   <script>
     document.documentElement.classList.add("js-ready");
     let saved = null;
@@ -33,10 +33,15 @@
 
   <header class="top-strip">
     <div class="top-strip-inner">
-      <div class="strip-coord">
-        <span class="coord-brand">keenan.semine</span>
-        <span class="coord-sep" aria-hidden="true">//</span>
-        <span class="coord-active" id="activeCoord">01_about</span>
+      <div class="strip-left">
+        <button type="button" class="menu-toggle" id="menuToggle" aria-label="Open navigation menu" aria-expanded="false" aria-controls="sidebar">
+          <span></span><span></span><span></span>
+        </button>
+        <div class="strip-coord">
+          <span class="coord-brand">semi-naan</span>
+          <span class="coord-sep" aria-hidden="true">//</span>
+          <span class="coord-active" id="activeCoord">01_about</span>
+        </div>
       </div>
       <div class="strip-controls">
         <button type="button" class="cmd-trigger" id="cmdTrigger" aria-haspopup="dialog" aria-controls="cmdPalette" aria-label="Open quick actions command palette">
@@ -52,18 +57,12 @@
   </header>
 
   <div class="workspace">
-    <aside class="sidebar" aria-label="Profile and section navigation">
+    <div class="sidebar-backdrop" id="sidebarBackdrop" hidden></div>
+    <aside class="sidebar" id="sidebar" aria-label="Profile and section navigation">
       <div class="sidebar-top">
         <div class="sidebar-identity">
-          <div class="status-badge">
-            <span class="status-dot" aria-hidden="true"></span>
-            <span>OPEN TO ROLES &amp; PROJECTS</span>
-          </div>
           <h1 class="sidebar-name">Keenan Maze <span class="accent">Semine</span></h1>
-          <p class="sidebar-role">Front-end Developer</p>
-          <p class="sidebar-pitch">
-            I build clean, user-friendly interfaces and applications—from mobile apps in Kotlin to responsive web platforms.
-          </p>
+          <p class="sidebar-role">Full-Stack Developer</p>
         </div>
 
         <nav class="rail-nav" role="tablist" aria-label="Portfolio sections" aria-orientation="vertical">
@@ -101,13 +100,9 @@
       </div>
 
       <div class="sidebar-footer">
-        <div class="sidebar-meta">
-          <span>Cebu City, PH</span>
-          <span>BSCS · UC Main</span>
-        </div>
-        <div class="sidebar-actions">
-          <button type="button" class="btn btn-primary" id="sidebarContactBtn" data-panel-jump="contact">Get in Touch</button>
-          <button type="button" class="btn btn-outline" data-copy-email>Copy Email</button>
+        <div class="status-badge">
+          <span class="status-dot" aria-hidden="true"></span>
+          <span>OPEN TO ROLES &amp; PROJECTS</span>
         </div>
         <div class="sidebar-links">
           <a href="https://github.com/semi-naan" target="_blank" rel="noopener noreferrer">GitHub &#8599;</a>
@@ -155,7 +150,7 @@
             </div>
             <div class="fact-box">
               <span class="fact-label">EDUCATION</span>
-              <strong class="fact-value">BSCS · University of Cebu</strong>
+              <strong class="fact-value">Bachelor of Science in Computer Science</strong>
             </div>
           </div>
 
